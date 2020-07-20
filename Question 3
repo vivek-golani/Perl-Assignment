@@ -1,0 +1,74 @@
+#Question 3 : Expense Tracker
+
+
+use strict;
+use warnings;
+
+open(my $exphandle, '<', "expense.txt") or die "Could not open expense.txt\n";
+@expense = split(",", $exphandle);
+
+open(my $amthandle, '<', "amount.txt") or die "Could not open amount.txt\n";
+@amount = split(",", $amthandle);
+
+sub addexp{
+	my $req = 1;
+	while($req){
+		print "Do you want to add an expense 1 for yes/0 for no\n";
+		$req = <STDIN>;
+		chomp($req);
+		if($req == 0){
+			last;
+		}
+		
+		print "Enter the expense description\n";
+		my $exp = <STDIN>;
+		chomp($exp);
+		push(@expense,$exp);
+		
+		print "Enter the expense amount\n";
+		my $amt = <STDIN>;
+		chomp($amt);
+		push(@amount,$amt);
+	}
+	open(FH, '>', "expense.txt") or die $!;
+	print FH @expense;
+	close(FH);
+
+	open(FH, '>', "amount.txt") or die $!;
+	print FH @amount;
+	close(FH);
+}
+
+sub analyse{
+	open(my $exphandle, '<', "expense.txt") or die "Could not open expense.txt\n";
+	@expense = split(",", $exphandle);
+
+	open(my $amthandle, '<', "amount.txt") or die "Could not open amount.txt\n";
+	@amount = split(",", $amthandle);
+	
+	my @idx = sort { $aa[$b] <=> $aa[$a] } 0 .. $#aa;
+
+	@expense = @expense[@idx];
+	@amount = @amount[@idx];
+
+	my $len = @expense;
+	print "Analysis Report of Expenses in Descending order of money spent";
+
+	print "Expense Description\t\t\tAmount\n";
+	for(my $i = 0; $i < $len; $i++){
+		print "expense[$i]\t\t\t";
+		print "amount[$i]\n;
+	}
+
+	print "Hope this analysis helps:)\n";
+}
+
+print "Type 1 to add expenses or 2 to analyse expenses\n";
+my $opt = <STDIN>;
+chomp($opt);
+
+if($opt == 1){
+	addexp;
+}else{
+	analyse;
+}
