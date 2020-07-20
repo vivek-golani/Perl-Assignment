@@ -1,0 +1,222 @@
+Question 1 : Quiz Application
+
+use strict;
+use warnings;
+
+open(my $userhandle, '<', "username.txt") or die "Could not open username.txt\n";
+@username = split(",", $userhandle);
+
+open(my $passhandle, '<', "password.txt") or die "Could not open password.txt\n";
+@password = split(",", $passhandle);
+
+open(my $typehandle, '<', "identity.txt") or die "Could not open identity.txt\n";
+@identity = split(",", $typehandle);
+
+open(my $qstnhandle, '<', "question.txt") or die "Could not open question.txt\n";
+@question = split(",", $qstnhandle);
+
+open(my $ophandle, '<', "option.txt") or die "Could not open option.txt\n";
+@question = split(",", $ophandle);
+
+open(my $anshandle, '<', "answer.txt") or die "Could not open answer.txt\n";
+@answer = split(",", $anshandle);
+
+
+sub login{
+	my($user, $pass, $type) = $user, $pass, $type;
+	my $len = @username;
+	for(my $i = 0; $i < $len; $i++){
+		if(username[i] == user and password[i] == pass and identity[i] == type){ 
+        		return "Login Successful"; 
+			
+    		} 
+    		else{ 
+    			return "User not found, Please register";
+    		} 
+	} 
+}
+
+sub register{
+	my($user, $pass, $type) = $user, $pass, $type;
+	push(@username, user);
+	push(@password, pass);
+	push(@identity, type);
+}
+
+sub test{
+	my $len = @question;
+	my $k = 0;
+	for(my $i = 1; $i <= 10; $i++){
+		my $a = int rand($len);
+		print "question[$a]";
+		
+		print "Enter the correct option\n";
+		my $ans = <STDIN>;
+		chomp($ans);
+		my $l = 0
+		for(my $j = $a; $j < $a + 4; $j++){
+			if(option[$a] == $ans){
+				$l=1;
+				$k++;
+				last;
+			}
+		}
+		if($l == 1){
+			print "Correct answer\n";
+		}else{
+			print "Incorrect answer\n";
+		}
+	}
+	return "Overall test score = $k";
+}
+
+sub submit{
+	my $req = 1;
+	while($req){
+		print "Do you want to add a question 1 for yes/0 for no\n";
+		$req = <STDIN>;
+		chomp($req);
+		if($req == 0){
+			last;
+		}
+		
+		print "Enter the question\n";
+		my $ques = <STDIN>;
+		chomp($ques);
+		push(@question,$ques);
+		
+		for(my $i = 1; $i <= 4; $i++){
+			print "Enter the $i option\n";
+			my $opt = <STDIN>;
+			chomp($opt);
+			push(@option, $opt);
+		}
+	
+		print "Enter the answer as option\n";
+		my $ans = <STDIN>;
+		chomp($ans);
+		push(@answer,$ans);
+	}
+	open(FH, '>', "question.txt") or die $!;
+	print FH @question;
+	close(FH);
+
+	open(FH, '>', "option.txt") or die $!;
+	print FH @option;
+	close(FH);
+	
+	open(FH, '>', "answer.txt") or die $!;
+	print FH @answer;
+	close(FH);	
+}
+
+print "Enter 1 to Create Account or 2 to Login\n";
+$option = <STDIN>
+chomp($option);
+
+my $temp = "User not found, Please register";
+while($temp ne "Login Successful")
+	print "Enter username\n";
+	$user = <STDIN>;
+	chomp($user);
+	
+	print "Enter password\n";
+	$pass= <STDIN>;
+	chomp($pass);
+	
+	print "Enter 1 if admin and 2 if test-taker\n"
+	$type= <STDIN>;
+	chomp($type);
+
+	if($option == 1){
+		$temp = login $user, $pass, $type
+		print "$temp";
+	}else{
+		$temp = register $user, $pass, $type
+		print "$temp";
+	}
+}
+
+if($type == 1){
+	submit;
+	print "Question/s submitted";
+}
+else{
+	print test;
+}
+
+
+Question 3 : Expense Tracker
+
+
+use strict;
+use warnings;
+
+open(my $exphandle, '<', "expense.txt") or die "Could not open expense.txt\n";
+@expense = split(",", $exphandle);
+
+open(my $amthandle, '<', "amount.txt") or die "Could not open amount.txt\n";
+@amount = split(",", $amthandle);
+
+sub addexp{
+	my $req = 1;
+	while($req){
+		print "Do you want to add an expense 1 for yes/0 for no\n";
+		$req = <STDIN>;
+		chomp($req);
+		if($req == 0){
+			last;
+		}
+		
+		print "Enter the expense description\n";
+		my $exp = <STDIN>;
+		chomp($exp);
+		push(@expense,$exp);
+		
+		print "Enter the expense amount\n";
+		my $amt = <STDIN>;
+		chomp($amt);
+		push(@amount,$amt);
+	}
+	open(FH, '>', "expense.txt") or die $!;
+	print FH @expense;
+	close(FH);
+
+	open(FH, '>', "amount.txt") or die $!;
+	print FH @amount;
+	close(FH);
+}
+
+sub analyse{
+	open(my $exphandle, '<', "expense.txt") or die "Could not open expense.txt\n";
+	@expense = split(",", $exphandle);
+
+	open(my $amthandle, '<', "amount.txt") or die "Could not open amount.txt\n";
+	@amount = split(",", $amthandle);
+	
+	my @idx = sort { $aa[$b] <=> $aa[$a] } 0 .. $#aa;
+
+	@expense = @expense[@idx];
+	@amount = @amount[@idx];
+
+	my $len = @expense;
+	print "Analysis Report of Expenses in Descending order of money spent";
+
+	print "Expense Description\t\t\tAmount\n";
+	for(my $i = 0; $i < $len; $i++){
+		print "expense[$i]\t\t\t";
+		print "amount[$i]\n;
+	}
+
+	print "Hope this analysis helps:)\n";
+}
+
+print "Type 1 to add expenses or 2 to analyse expenses\n";
+my $opt = <STDIN>;
+chomp($opt);
+
+if($opt == 1){
+	addexp;
+}else{
+	analyse;
+}
